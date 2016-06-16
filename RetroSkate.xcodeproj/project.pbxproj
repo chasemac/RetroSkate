@@ -30,6 +30,7 @@
 		0EFA5F591D1329F8007E5E61 /* sfxGameOver.wav in Resources */ = {isa = PBXBuildFile; fileRef = 0EFA5F531D1329F8007E5E61 /* sfxGameOver.wav */; };
 		0EFA5F5A1D1329F8007E5E61 /* sfxOllie.wav in Resources */ = {isa = PBXBuildFile; fileRef = 0EFA5F541D1329F8007E5E61 /* sfxOllie.wav */; };
 		0EFA5F5B1D1329F8007E5E61 /* sfxSkateOrDie.wav in Resources */ = {isa = PBXBuildFile; fileRef = 0EFA5F551D1329F8007E5E61 /* sfxSkateOrDie.wav */; };
+		0EFA5F5D1D132D0F007E5E61 /* DumpsterTop.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EFA5F5C1D132D0F007E5E61 /* DumpsterTop.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -58,6 +59,7 @@
 		0EFA5F531D1329F8007E5E61 /* sfxGameOver.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = sfxGameOver.wav; sourceTree = "<group>"; };
 		0EFA5F541D1329F8007E5E61 /* sfxOllie.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = sfxOllie.wav; sourceTree = "<group>"; };
 		0EFA5F551D1329F8007E5E61 /* sfxSkateOrDie.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = sfxSkateOrDie.wav; sourceTree = "<group>"; };
+		0EFA5F5C1D132D0F007E5E61 /* DumpsterTop.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DumpsterTop.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -109,14 +111,10 @@
 		0EFA5F1D1D11F742007E5E61 /* GameObjects */ = {
 			isa = PBXGroup;
 			children = (
-				0EFA5F171D11F2B3007E5E61 /* Obstacle.swift */,
-				0EFA5F1B1D11F601007E5E61 /* Dumpster.swift */,
+				0EFA5F5F1D13457E007E5E61 /* Obstacles */,
+				0EFA5F5E1D133784007E5E61 /* Scenery */,
 				0EFA5F201D120D5E007E5E61 /* Player.swift */,
-				0EFA5F451D125F9C007E5E61 /* Scenery.swift */,
-				0EFA5F471D12656E007E5E61 /* Asphalt.swift */,
-				0EFA5F491D126B2B007E5E61 /* Sidewalk.swift */,
 				0EFA5F4B1D130EB6007E5E61 /* Moveable.swift */,
-				0EFA5F4D1D130FF1007E5E61 /* Building.swift */,
 			);
 			name = GameObjects;
 			sourceTree = "<group>";
@@ -156,6 +154,27 @@
 				0EFA5F551D1329F8007E5E61 /* sfxSkateOrDie.wav */,
 			);
 			name = Audio;
+			sourceTree = "<group>";
+		};
+		0EFA5F5E1D133784007E5E61 /* Scenery */ = {
+			isa = PBXGroup;
+			children = (
+				0EFA5F451D125F9C007E5E61 /* Scenery.swift */,
+				0EFA5F471D12656E007E5E61 /* Asphalt.swift */,
+				0EFA5F491D126B2B007E5E61 /* Sidewalk.swift */,
+				0EFA5F4D1D130FF1007E5E61 /* Building.swift */,
+			);
+			name = Scenery;
+			sourceTree = "<group>";
+		};
+		0EFA5F5F1D13457E007E5E61 /* Obstacles */ = {
+			isa = PBXGroup;
+			children = (
+				0EFA5F171D11F2B3007E5E61 /* Obstacle.swift */,
+				0EFA5F1B1D11F601007E5E61 /* Dumpster.swift */,
+				0EFA5F5C1D132D0F007E5E61 /* DumpsterTop.swift */,
+			);
+			name = Obstacles;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -241,6 +260,7 @@
 				0EFA5F241D121346007E5E61 /* GameManager.swift in Sources */,
 				0E2B8BA81D0CD97E006DBD76 /* GameViewController.swift in Sources */,
 				0EFA5F1A1D11F52F007E5E61 /* SKNodeUpdate.swift in Sources */,
+				0EFA5F5D1D132D0F007E5E61 /* DumpsterTop.swift in Sources */,
 				0EFA5F4A1D126B2B007E5E61 /* Sidewalk.swift in Sources */,
 				0EFA5F1C1D11F601007E5E61 /* Dumpster.swift in Sources */,
 				0EFA5F481D12656E007E5E61 /* Asphalt.swift in Sources */,

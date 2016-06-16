@@ -50,9 +50,15 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         
         let dumpster = Dumpster()
         self.addChild(dumpster)
-        dumpster.startMoving()
-        
         self.obstacles.append(dumpster)
+        
+        let dumpsterTop = DumpsterTop()
+        self.addChild(dumpsterTop)
+        dumpsterTop.position = CGPointMake(dumpster.position.x, dumpster.position.y + 50)
+        self.obstacles.append(dumpsterTop)
+        
+        dumpsterTop.startMoving()
+                dumpster.startMoving()
         
         for x in 0 ..< 3 {
             let wait = SKAction.waitForDuration(3.0 * Double(x))

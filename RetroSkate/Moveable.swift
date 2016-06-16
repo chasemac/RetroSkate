@@ -9,18 +9,18 @@
 import SpriteKit
 
 class Moveable: SKSpriteNode {
-    static let RESET_X_POS: CGFloat = -800
+    static let resetXPos: CGFloat = -800
     
     
     
     
     var moveAction: SKAction!
     var moveForever: SKAction!
-    var yPos: CGFloat = 0.0
-    var xPos: CGFloat = 1800
+    var yPosStart: CGFloat = 0.0
+    var xPosStart: CGFloat = 1800
     
     func startMoving() {
-        self.position = CGPointMake(xPos, yPos)
+        self.position = CGPointMake(xPosStart, yPosStart)
         
         moveAction = SKAction.moveByX(GameManager.sharedInstance.MOVEMENT_SPEED, y: 0, duration: 0.02)
         moveForever = SKAction.repeatActionForever(moveAction)
@@ -30,12 +30,12 @@ class Moveable: SKSpriteNode {
     }
     
     override func update() {
-        if self.position.x <= Obstacle.RESET_X_POS {
+        if self.position.x <= Obstacle.resetXPos {
             didExceedBounds()
         }
     }
     
     func didExceedBounds() {
-        self.position = CGPointMake(xPos, self.position.y)
+        self.position = CGPointMake(xPosStart, self.position.y)
     }
 }

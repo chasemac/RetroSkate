@@ -13,7 +13,7 @@ class Building: Moveable {
     convenience init() {
         self.init(imageNamed: "building\(arc4random_uniform(8))")
         self.anchorPoint = CGPointMake(0.5, 0)
-        self.yPos = 200
+        self.yPosStart = 200
         self.zPosition = 4
     }
     

@@ -5,37 +5,23 @@
 //  Created by Chase McElroy on 6/15/16.
 //  Copyright © 2016 Chase McElroy. All rights reserved.
 //
-
-import SpriteKit
+//
+//import SpriteKit
 //
 //class Asphalt: Scenery {
 //    convenience init() {
 //        self.init(imageNamed: "asphalt")
+//        self.TotalGroundPieces = 15
+//        self.yPosStart = 144
 //    }
 //    
-//    func setupGround() {
-//        for x in 0 ..< ASP_PIECES {
-//            
-//            
+//    override func setupGround() {
 //            let collider = SKPhysicsBody(rectangleOfSize: CGSizeMake(self.size.width, 5), center: CGPointMake(0, -20))
 //            
 //            collider.dynamic = false
 //            self.physicsBody = collider
-//            
-//            asphaltPieces.append(self)
-//            
-//            if x == 0 {
-//                let start = CGPointMake(0, 144)
-//                self.position = start
-//            } else {
-//                self.position = CGPointMake(self.size.width + asphaltPieces[x - 1].position.x, asphaltPieces[x - 1].position.y)
-//            }
-//            
-//            //    asp.runAction(moveForever)
-//            
-//            self.addChild(self)
-//        }
 //        
+//        super.setupGround()
 //
 //    }
 //}

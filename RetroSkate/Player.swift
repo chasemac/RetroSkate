@@ -24,8 +24,6 @@ class Player: SKSpriteNode {
     
     func setupCharacter() {
         
-
-        
         for x in 0 ..< 9 {
             charPushFrames.append(SKTexture(imageNamed: "push\(x)"))
         }
