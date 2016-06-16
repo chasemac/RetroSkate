@@ -8,32 +8,43 @@
 
 import SpriteKit
 
-class GameScene: SKScene {
+class GameScene: SKScene, SKPhysicsContactDelegate {
     
     //Scenery setup
     let ASP_PIECES = 15
-    let GROUND_SPEED: CGFloat = -8.5
+    let SIDEWALK_PIECES = 24
     let GROUND_X_Reset: CGFloat = -150
+    let BG_X_RESET: CGFloat = -912.0
+    var asphaltPieces = [SKSpriteNode]()
+    var sidewalkPieces = [SKSpriteNode]()
+    var farBG = [SKSpriteNode]()
+    var midBG = [SKSpriteNode]()
+    var frontBG = [SKSpriteNode]()
     var moveGroundAction: SKAction!
     var moveGroundActionForever: SKAction!
-    var asphaltPieces = [SKSpriteNode]()
+    var backgroundActions = [SKAction]()
     
-    //Character setup
-    var charPushFrames = [SKTexture]()
-    let CHAR_X_POS: CGFloat = 158
-    let CHAR_Y_POS: CGFloat = 180
-    var character: SKSpriteNode!
-    var isJumping: Bool = false
+    var player: Player!
     
     override func didMoveToView(view: SKView) {
         
         setupBackground()
         setupGround()
-        setupCharacter()
         
-        let tap = UITapGestureRecognizer(target: self, action: #selector(jump))
+        
+        
+        let tap = UITapGestureRecognizer(target: self, action: #selector(tapped))
         tap.allowedPressTypes = [NSNumber(integer: UIPressType.Select.rawValue)]
         self.view?.addGestureRecognizer(tap)
+        
+        self.physicsWorld.gravity = CGVectorMake(0.0, -10)
+        self.physicsWorld.contactDelegate = self
+        
+        player = Player()
+        self.addChild(player)
+        let dumpster = Dumpster()
+        self.addChild(dumpster)
+        dumpster.startMoving()
     }
     
    
@@ -41,33 +52,52 @@ class GameScene: SKScene {
         /* Called before each frame is rendered */
         groundMovement()
         
-        if isJumping {
-            if floor(character.physicsBody!.velocity.dy) == 0 {
-                isJumping = false
-            }
+        
+        for child in self.children {
+            child.update()
         }
     }
     
     func setupBackground() {
-        let bg = SKSpriteNode(imageNamed: "bg1")
-        bg.position = CGPointMake(517, 400)
-        bg.zPosition = 3
-        self.addChild(bg)
         
-        let bg2 = SKSpriteNode(imageNamed: "bg2")
-        bg2.position = CGPointMake(517, 450)
-        bg2.zPosition = 2
-        self.addChild(bg2)
+        var action: SKAction!
         
-        let bg3 = SKSpriteNode(imageNamed: "bg3")
-        bg3.position = CGPointMake(517, 500)
-        bg3.zPosition = 1
-        self.addChild(bg3)
+        for x in 0 ..< 3 {
+            let bg0 = SKSpriteNode(imageNamed: "bg0")
+            bg0.position = CGPointMake(CGFloat(x) * bg0.size.width, 400)
+            print(bg0.position)
+            bg0.zPosition = 3
+            frontBG.append(bg0)
+            action = SKAction.repeatActionForever(SKAction.moveByX(-2.0, y: 0, duration: 0.02))
+            bg0.runAction(action)
+            backgroundActions.append(action)
+            self.addChild(bg0)
+            
+            let bg1 = SKSpriteNode(imageNamed: "bg1")
+            bg1.position = CGPointMake(CGFloat(x) * bg1.size.width, 450)
+            bg1.zPosition = 2
+            midBG.append(bg1)
+            action = SKAction.repeatActionForever(SKAction.moveByX(-1.0, y: 0, duration: 0.02))
+            bg1.runAction(action)
+            backgroundActions.append(action)
+            self.addChild(bg1)
+            
+            let bg2 = SKSpriteNode(imageNamed: "bg2")
+            bg2.position = CGPointMake(CGFloat(x) * bg2.size.width, 500)
+            bg2.zPosition = 1
+            farBG.append(bg2)
+            action = SKAction.repeatActionForever(SKAction.moveByX(-0.5, y: 0, duration: 0.02))
+            bg2.runAction(action)
+            backgroundActions.append(action)
+            self.addChild(bg2)
+        }
+        
+
     }
     
     func setupGround() {
         
-        moveGroundAction = SKAction.moveByX(GROUND_SPEED, y: 0, duration: 0.02)
+        moveGroundAction = SKAction.moveByX(GameManager.sharedInstance.MOVEMENT_SPEED, y: 0, duration: 0.02)
         moveGroundActionForever = SKAction.repeatActionForever(moveGroundAction)
         
         for x in 0 ..< ASP_PIECES {
@@ -92,6 +122,24 @@ class GameScene: SKScene {
             self.addChild(asp)
         }
         
+        for x in 0 ..< SIDEWALK_PIECES {
+            let piece = SKSpriteNode(imageNamed: "sidewalk")
+            
+            sidewalkPieces.append(piece)
+            
+            if x == 0 {
+                let start = CGPointMake(0, 190)
+                piece.position = start
+            } else {
+                piece.position = CGPointMake(piece.size.width + sidewalkPieces[x - 1].position.x, sidewalkPieces[x - 1].position.y)
+            }
+            
+            piece.zPosition = 5
+            piece.runAction(moveGroundActionForever)
+            
+            self.addChild(piece)
+        }
+        
     }
     
     func groundMovement() {
@@ -112,46 +160,85 @@ class GameScene: SKScene {
             }
             
         }
-    }
-    
-    func setupCharacter() {
         
-        for x in 0 ..< 12 {
-            charPushFrames.append(SKTexture(imageNamed: "push\(x)"))
+        for x in 0 ..< sidewalkPieces.count {
+            
+            if sidewalkPieces[x].position.x <= GROUND_X_Reset {
+                var index: Int!
+                
+                if x == 0 {
+                    index = sidewalkPieces.count - 1
+                } else {
+                    index = x - 1
+                }
+                
+                let newPos = CGPointMake(sidewalkPieces[index].position.x + sidewalkPieces[x].size.width, sidewalkPieces[x].position.y)
+                
+                sidewalkPieces[x].position = newPos
+            }
+            
         }
         
-        character = SKSpriteNode(texture: charPushFrames[0])
-        self.addChild(character)
+        for x in 0 ..< 3 {
+            
+            if farBG[x].position.x <= BG_X_RESET {
+                var index: Int!
+                
+                if x == 0 {
+                    index = farBG.count - 1
+                } else {
+                    index = x - 1
+                }
+                
+                let newPos = CGPointMake(farBG[index].position.x + farBG[x].size.width, farBG[x].position.y)
+                
+                farBG[x].position = newPos
+            }
+        }
+
+        for x in 0 ..< 3 {
+            if midBG[x].position.x <= BG_X_RESET {
+                var index: Int!
+                
+                if x == 0 {
+                    index = midBG.count - 1
+                } else {
+                    index = x - 1
+                }
+                
+                let newPos = CGPointMake(midBG[index].position.x + midBG[x].size.width, midBG[x].position.y)
+                
+                midBG[x].position = newPos
+            }
+        }
         
-        character.position = CGPointMake(CHAR_X_POS, CHAR_Y_POS)
-        character.zPosition = 10
-        
-        character.runAction(SKAction.repeatActionForever(SKAction.animateWithTextures(charPushFrames, timePerFrame: 0.1)))
-        
-        let frontColliderSize = CGSizeMake(5, character.size.height * 0.80)
-        let frontCollider = SKPhysicsBody(rectangleOfSize: frontColliderSize, center: CGPointMake(25, 0))
-        
-        let bottomColliderSize = CGSizeMake(character.size.width / 2, 5)
-        let bottomCollider = SKPhysicsBody(rectangleOfSize: bottomColliderSize, center: CGPointMake(0, -(character.size.height / 2) + 5))
-        
-        character.physicsBody = SKPhysicsBody(bodies: [frontCollider,bottomCollider])
-        
-        character.physicsBody?.restitution = 0
-        character.physicsBody?.linearDamping = 0.1
-        character.physicsBody?.allowsRotation = false
-        character.physicsBody?.mass = 0.1
-        character.physicsBody?.dynamic = true
-        self.physicsWorld.gravity = CGVectorMake(0.0, -10)
-    }
-    
-    func jump(gesture: UITapGestureRecognizer) {
-        
-        if isJumping == false {
-            isJumping = true
-            let impulseX: CGFloat = 0
-            let impulesY: CGFloat = 60.0
-            character.physicsBody?.applyImpulse(CGVectorMake(impulseX, impulesY))
+            for x in 0 ..< 3 {
+            if frontBG[x].position.x <= BG_X_RESET {
+                var index: Int!
+                
+                if x == 0 {
+                    index = frontBG.count - 1
+                } else {
+                    index = x - 1
+                }
+                
+                let newPos = CGPointMake(frontBG[index].position.x + frontBG[x].size.width, frontBG[x].position.y)
+                
+                frontBG[x].position = newPos
+            }
+            
         }
     }
     
+    func tapped(gesture: UITapGestureRecognizer) {
+        player.jump()
+
+    }
+    
+    func didBeginContact(contact: SKPhysicsContact) {
+        
+        if contact.bodyA.categoryBitMask == GameManager.sharedInstance.COLLIDER_OBSTACLE || contact.bodyB.categoryBitMask == GameManager.sharedInstance.COLLIDER_OBSTACLE {
+            print("boom we hit it!")
+        }
+    }
 }
