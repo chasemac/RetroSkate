@@ -8,31 +8,11 @@
 
 import SpriteKit
 
-class Obstacle: SKSpriteNode {
+class Obstacle: Moveable {
     
-    static let RESET_X_POS: CGFloat = -800
-    static let START_X_POS: CGFloat = 1800
-    
-    var moveAction: SKAction!
-    var moveForever: SKAction!
-    
-    func startMoving() {
-        self.position = CGPointMake(Obstacle.START_X_POS, 180)
-        
-        moveAction = SKAction.moveByX(GameManager.sharedInstance.MOVEMENT_SPEED, y: 0, duration: 0.02)
-        moveForever = SKAction.repeatActionForever(moveAction)
-        self.zPosition = 7
-        
+    override func startMoving() {
+        super.startMoving()
         self.initPhysics()
-        
-        self.runAction(moveForever)
-        
-    }
-    
-    override func update() {
-        if self.position.x <= Obstacle.RESET_X_POS {
-            self.position = CGPointMake(Obstacle.START_X_POS, self.position.y)
-        }
     }
     
     func initPhysics() {

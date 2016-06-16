@@ -7,6 +7,7 @@
 //
 
 import SpriteKit
+import AVFoundation
 
 class GameScene: SKScene, SKPhysicsContactDelegate {
     
@@ -24,7 +25,12 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     var moveGroundActionForever: SKAction!
     var backgroundActions = [SKAction]()
     
+    var buildings = [SKSpriteNode]()
+    var obstacles = [SKSpriteNode]()
+    
     var player: Player!
+    
+    var musicPlayer: AVAudioPlayer!
     
     override func didMoveToView(view: SKView) {
         
@@ -41,9 +47,25 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         
         player = Player()
         self.addChild(player)
+        
         let dumpster = Dumpster()
         self.addChild(dumpster)
         dumpster.startMoving()
+        
+        self.obstacles.append(dumpster)
+        
+        for x in 0 ..< 3 {
+            let wait = SKAction.waitForDuration(3.0 * Double(x))
+            self.runAction(wait, completion: {
+                let building = Building()
+                self.buildings.append(building)
+                self.addChild(building)
+                self.obstacles.append(dumpster)
+                building.startMoving()
+            })
+        }
+        
+        playLevelMusic()
     }
     
     
@@ -57,6 +79,20 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         }
     }
     
+    func playLevelMusic() {
+        
+        let levelMusicURL = NSBundle.mainBundle().URLForResource("musicMain", withExtension: "wav")!
+        
+        do {
+            musicPlayer = try AVAudioPlayer(contentsOfURL: levelMusicURL)
+            musicPlayer.numberOfLoops = -1 //infite loops
+            musicPlayer.prepareToPlay()
+            musicPlayer.play()
+        } catch {
+            print("error playing music")
+        }
+    }
+    
     func setupBackground() {
         
         var action: SKAction!
@@ -65,7 +101,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             for x in 0 ..< 3 {
                 let bg = SKSpriteNode(imageNamed: "bg\(i)")
                 bg.position = CGPointMake(CGFloat(x) * bg.size.width, 400 + CGFloat(i))
-                print(bg.position)
                 bg.zPosition = CGFloat(i) + 1
                 backgroundPieces.append(bg)
                 action = SKAction.repeatActionForever(SKAction.moveByX(-2.0, y: 0, duration: 0.02))
@@ -79,6 +114,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         
     }
     
+
+    
     func setupGround() {
         
         moveGroundAction = SKAction.moveByX(GameManager.sharedInstance.MOVEMENT_SPEED, y: 0, duration: 0.02)
@@ -90,6 +127,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             let collider = SKPhysicsBody(rectangleOfSize: CGSizeMake(asp.size.width, 5), center: CGPointMake(0, -20))
             
             collider.dynamic = false
+            
             asp.physicsBody = collider
             
             asphaltPieces.append(asp)
@@ -193,7 +231,33 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     func didBeginContact(contact: SKPhysicsContact) {
         
         if contact.bodyA.categoryBitMask == GameManager.sharedInstance.COLLIDER_OBSTACLE || contact.bodyB.categoryBitMask == GameManager.sharedInstance.COLLIDER_OBSTACLE {
-            print("boom we hit it!")
+            print("hit!")
+            self.removeAllActions()
+            
+            musicPlayer.stop()
+            self.runAction(SKAction.playSoundFileNamed("sfxGameOver.wav", waitForCompletion: false))
+            
+            player.playCrashAnim()
+            
+            for node in asphaltPieces {
+                node.removeAllActions()
+            }
+            
+            for node in sidewalkPieces {
+                node.removeAllActions()
+            }
+            
+            for node in backgroundPieces {
+                node.removeAllActions()
+            }
+            
+            for obs in obstacles {
+                obs.removeAllActions()
+            }
+            
+            for bld in buildings {
+                bld.removeAllActions()
+            }
         }
     }
 }

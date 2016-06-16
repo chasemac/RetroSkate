@@ -12,6 +12,7 @@ class Player: SKSpriteNode {
     
     //Character setup
     var charPushFrames = [SKTexture]()
+    var charCrashFrames = [SKTexture]()
     let CHAR_X_POS: CGFloat = 158
     let CHAR_Y_POS: CGFloat = 180
     var isJumping: Bool = false
@@ -23,14 +24,20 @@ class Player: SKSpriteNode {
     
     func setupCharacter() {
         
-        for x in 0 ..< 12 {
+
+        
+        for x in 0 ..< 9 {
             charPushFrames.append(SKTexture(imageNamed: "push\(x)"))
+        }
+        
+        for x in 0 ..< 9 {
+            charCrashFrames.append(SKTexture(imageNamed: "crash\(x)"))
         }
         
         self.position = CGPointMake(CHAR_X_POS, CHAR_Y_POS)
         self.zPosition = 10
         
-        self.runAction(SKAction.repeatActionForever(SKAction.animateWithTextures(charPushFrames, timePerFrame: 0.1)))
+        
         
         let frontColliderSize = CGSizeMake(5, self.size.height * 0.80)
         let frontCollider = SKPhysicsBody(rectangleOfSize: frontColliderSize, center: CGPointMake(25, 0))
@@ -49,6 +56,18 @@ class Player: SKSpriteNode {
         self.physicsBody?.categoryBitMask = GameManager.sharedInstance.COLLIDER_PLAYER
         self.physicsBody?.contactTestBitMask = GameManager.sharedInstance.COLLIDER_OBSTACLE
         
+        playPushAnim()
+        
+    }
+    
+    func playPushAnim() {
+        self.removeAllActions()
+        self.runAction(SKAction.repeatActionForever(SKAction.animateWithTextures(charPushFrames, timePerFrame: 0.1)))
+    }
+    
+    func playCrashAnim() {
+        self.removeAllActions()
+        self.runAction(SKAction.animateWithTextures(charCrashFrames, timePerFrame: 0.4))
     }
     
     func jump() {
@@ -56,6 +75,7 @@ class Player: SKSpriteNode {
             isJumping = true
             let impulseX: CGFloat = 0
             let impulesY: CGFloat = 60.0
+            self.runAction(SKAction.playSoundFileNamed("sfxOllie.wav", waitForCompletion: false))
             self.physicsBody?.applyImpulse(CGVectorMake(impulseX, impulesY))
         }
     }
