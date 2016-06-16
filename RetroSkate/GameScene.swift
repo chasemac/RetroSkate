@@ -17,9 +17,9 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     let BG_X_RESET: CGFloat = -912.0
     var asphaltPieces = [SKSpriteNode]()
     var sidewalkPieces = [SKSpriteNode]()
-    var farBG = [SKSpriteNode]()
-    var midBG = [SKSpriteNode]()
-    var frontBG = [SKSpriteNode]()
+    
+    var backgroundPieces = [SKSpriteNode]()
+    
     var moveGroundAction: SKAction!
     var moveGroundActionForever: SKAction!
     var backgroundActions = [SKAction]()
@@ -30,7 +30,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         
         setupBackground()
         setupGround()
-        
         
         
         let tap = UITapGestureRecognizer(target: self, action: #selector(tapped))
@@ -47,7 +46,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         dumpster.startMoving()
     }
     
-   
+    
     override func update(currentTime: CFTimeInterval) {
         /* Called before each frame is rendered */
         groundMovement()
@@ -62,37 +61,22 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         
         var action: SKAction!
         
-        for x in 0 ..< 3 {
-            let bg0 = SKSpriteNode(imageNamed: "bg0")
-            bg0.position = CGPointMake(CGFloat(x) * bg0.size.width, 400)
-            print(bg0.position)
-            bg0.zPosition = 3
-            frontBG.append(bg0)
-            action = SKAction.repeatActionForever(SKAction.moveByX(-2.0, y: 0, duration: 0.02))
-            bg0.runAction(action)
-            backgroundActions.append(action)
-            self.addChild(bg0)
+        for i in 0 ..< 3 {
+            for x in 0 ..< 3 {
+                let bg = SKSpriteNode(imageNamed: "bg\(i)")
+                bg.position = CGPointMake(CGFloat(x) * bg.size.width, 400 + CGFloat(i))
+                print(bg.position)
+                bg.zPosition = CGFloat(i) + 1
+                backgroundPieces.append(bg)
+                action = SKAction.repeatActionForever(SKAction.moveByX(-2.0, y: 0, duration: 0.02))
+                bg.runAction(action)
+                backgroundActions.append(action)
+                self.addChild(bg)
+            }
             
-            let bg1 = SKSpriteNode(imageNamed: "bg1")
-            bg1.position = CGPointMake(CGFloat(x) * bg1.size.width, 450)
-            bg1.zPosition = 2
-            midBG.append(bg1)
-            action = SKAction.repeatActionForever(SKAction.moveByX(-1.0, y: 0, duration: 0.02))
-            bg1.runAction(action)
-            backgroundActions.append(action)
-            self.addChild(bg1)
-            
-            let bg2 = SKSpriteNode(imageNamed: "bg2")
-            bg2.position = CGPointMake(CGFloat(x) * bg2.size.width, 500)
-            bg2.zPosition = 1
-            farBG.append(bg2)
-            action = SKAction.repeatActionForever(SKAction.moveByX(-0.5, y: 0, duration: 0.02))
-            bg2.runAction(action)
-            backgroundActions.append(action)
-            self.addChild(bg2)
         }
         
-
+        
     }
     
     func setupGround() {
@@ -179,60 +163,31 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             
         }
         
+        
+        
         for x in 0 ..< 3 {
             
-            if farBG[x].position.x <= BG_X_RESET {
+            if backgroundPieces[x].position.x <= BG_X_RESET {
                 var index: Int!
                 
                 if x == 0 {
-                    index = farBG.count - 1
+                    index = backgroundPieces.count - 1
                 } else {
                     index = x - 1
                 }
                 
-                let newPos = CGPointMake(farBG[index].position.x + farBG[x].size.width, farBG[x].position.y)
+                let newPos = CGPointMake(backgroundPieces[index].position.x + backgroundPieces[x].size.width, backgroundPieces[x].position.y)
                 
-                farBG[x].position = newPos
-            }
-        }
-
-        for x in 0 ..< 3 {
-            if midBG[x].position.x <= BG_X_RESET {
-                var index: Int!
-                
-                if x == 0 {
-                    index = midBG.count - 1
-                } else {
-                    index = x - 1
-                }
-                
-                let newPos = CGPointMake(midBG[index].position.x + midBG[x].size.width, midBG[x].position.y)
-                
-                midBG[x].position = newPos
+                backgroundPieces[x].position = newPos
             }
         }
         
-            for x in 0 ..< 3 {
-            if frontBG[x].position.x <= BG_X_RESET {
-                var index: Int!
-                
-                if x == 0 {
-                    index = frontBG.count - 1
-                } else {
-                    index = x - 1
-                }
-                
-                let newPos = CGPointMake(frontBG[index].position.x + frontBG[x].size.width, frontBG[x].position.y)
-                
-                frontBG[x].position = newPos
-            }
-            
-        }
+        
     }
     
     func tapped(gesture: UITapGestureRecognizer) {
         player.jump()
-
+        
     }
     
     func didBeginContact(contact: SKPhysicsContact) {
