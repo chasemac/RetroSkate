@@ -264,6 +264,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             for bld in buildings {
                 bld.removeAllActions()
             }
+            
+            
         }
     }
 }

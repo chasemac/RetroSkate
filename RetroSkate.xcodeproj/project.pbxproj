@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0E0FC80E1D19B5650098AE7D /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E0FC80D1D19B5650098AE7D /* ViewController.swift */; };
 		0E2B8BA21D0CD97E006DBD76 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E2B8BA11D0CD97E006DBD76 /* AppDelegate.swift */; };
 		0E2B8BA41D0CD97E006DBD76 /* GameScene.sks in Resources */ = {isa = PBXBuildFile; fileRef = 0E2B8BA31D0CD97E006DBD76 /* GameScene.sks */; };
 		0E2B8BA61D0CD97E006DBD76 /* GameScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E2B8BA51D0CD97E006DBD76 /* GameScene.swift */; };
@@ -34,6 +35,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		0E0FC80D1D19B5650098AE7D /* ViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		0E2B8B9E1D0CD97E006DBD76 /* RetroSkate.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = RetroSkate.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		0E2B8BA11D0CD97E006DBD76 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		0E2B8BA31D0CD97E006DBD76 /* GameScene.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = GameScene.sks; sourceTree = "<group>"; };
@@ -73,6 +75,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		0E0FC80A1D19B4EA0098AE7D /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				0E2B8BA71D0CD97E006DBD76 /* GameViewController.swift */,
+				0E0FC80D1D19B5650098AE7D /* ViewController.swift */,
+			);
+			name = Views;
+			sourceTree = "<group>";
+		};
 		0E2B8B951D0CD97E006DBD76 = {
 			isa = PBXGroup;
 			children = (
@@ -92,13 +103,13 @@
 		0E2B8BA01D0CD97E006DBD76 /* RetroSkate */ = {
 			isa = PBXGroup;
 			children = (
+				0E0FC80A1D19B4EA0098AE7D /* Views */,
 				0EFA5F4F1D1329E6007E5E61 /* Audio */,
 				0EFA5F221D121339007E5E61 /* Services */,
 				0EFA5F1F1D11F761007E5E61 /* Scenes */,
 				0EFA5F1E1D11F753007E5E61 /* Extensions */,
 				0EFA5F1D1D11F742007E5E61 /* GameObjects */,
 				0E2B8BA11D0CD97E006DBD76 /* AppDelegate.swift */,
-				0E2B8BA71D0CD97E006DBD76 /* GameViewController.swift */,
 				0E2B8BA31D0CD97E006DBD76 /* GameScene.sks */,
 				0E2B8BA91D0CD97E006DBD76 /* Game.xcassets */,
 				0E2B8BAB1D0CD97E006DBD76 /* Main.storyboard */,
@@ -209,6 +220,7 @@
 				TargetAttributes = {
 					0E2B8B9D1D0CD97E006DBD76 = {
 						CreatedOnToolsVersion = 7.3.1;
+						DevelopmentTeam = J2C764CY4K;
 					};
 				};
 			};
@@ -255,6 +267,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0E0FC80E1D19B5650098AE7D /* ViewController.swift in Sources */,
 				0E2B8BA61D0CD97E006DBD76 /* GameScene.swift in Sources */,
 				0EFA5F4E1D130FF1007E5E61 /* Building.swift in Sources */,
 				0EFA5F241D121346007E5E61 /* GameManager.swift in Sources */,
@@ -304,6 +317,7 @@
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
@@ -324,6 +338,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
+				PROVISIONING_PROFILE = "29b8c075-af5b-4118-91d3-c9afb8b68c63";
 				SDKROOT = appletvos;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				TARGETED_DEVICE_FAMILY = 3;
@@ -349,6 +364,7 @@
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_NS_ASSERTIONS = NO;
@@ -362,6 +378,7 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				MTL_ENABLE_DEBUG_INFO = NO;
+				PROVISIONING_PROFILE = "29b8c075-af5b-4118-91d3-c9afb8b68c63";
 				SDKROOT = appletvos;
 				TARGETED_DEVICE_FAMILY = 3;
 				TVOS_DEPLOYMENT_TARGET = 9.2;
@@ -374,10 +391,14 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = "App Icon & Top Shelf Image";
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "iPhone Developer";
 				INFOPLIST_FILE = RetroSkate/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = bio.chase.RetroSkate;
+				PRODUCT_BUNDLE_IDENTIFIER = bio.chase.SkateOrDie;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
+				TVOS_DEPLOYMENT_TARGET = 9.0;
 			};
 			name = Debug;
 		};
@@ -386,10 +407,14 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = "App Icon & Top Shelf Image";
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "iPhone Developer";
 				INFOPLIST_FILE = RetroSkate/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = bio.chase.RetroSkate;
+				PRODUCT_BUNDLE_IDENTIFIER = bio.chase.SkateOrDie;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
+				TVOS_DEPLOYMENT_TARGET = 9.0;
 			};
 			name = Release;
 		};
